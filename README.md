@@ -44,7 +44,7 @@ Las contribuciones son bienvenidas. Si deseas contribuir, sigue los procedimient
 
 
 ### Autores
-Urbano Flores Ruber Bernardoni
-Salazar Garay Joffrey Rivaldo
-Garay Espinoza Jhonny
-Gonzales Coral Alexander
+- Urbano Flores Ruber Bernardoni
+- Salazar Garay Joffrey Rivaldo
+- Garay Espinoza Jhonny
+- Gonzales Coral Alexander
