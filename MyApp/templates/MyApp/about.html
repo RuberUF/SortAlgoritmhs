@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Algoritmos de Ordenamiento</title>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        a {
+            color: #bb86fc;
+        }
+
+        a:hover {
+            color: #3700b3;
+        }
+
+        .navbar {
+            background-color: #1f1f1f;
+        }
+
+        .card img {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        footer {
+            background-color: #212529;
+            padding: 30px 20px;
+            color: white;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        footer .social-icons a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer .social-icons a:hover {
+            color: #ffc107;
+        }
+
+        footer p {
+            margin-top: 15px;
+            font-size: 1rem;
+        }
+
+        .team-section {
+            position: relative;
+            padding: 50px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #1f1f1f;
+        }
+
+        .team-section .image-container {
+            width: 260px;
+            height: auto;
+            margin: 0;
+        }
+
+        .team-section .image-container img {
+            width: 100%;
+            height: auto;
+        }
+
+        .team-section .image-left {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .team-section .image-right {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="#"><i class="fas fa-cogs"></i> Algoritmos</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'intereses' %}">Compresión</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">Acerca</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container my-5">
+        <br>
+        <br>
+        <section class="mb-5">
+            <div class="card p-4 shadow-lg">
+                <h2 class="text-center mb-4">Proyecto Final de Estructura de Datos</h2>
+                <p>Este proyecto final tiene como objetivo demostrar la implementación y eficiencia de varios algoritmos de ordenamiento. Es una parte fundamental del curso de Estructura de Datos, y nos ha proporcionado una comprensión profunda de estos conceptos esenciales en la informática.</p>
+            </div>
+        </section>
+
+        <section class="mb-5 text-center">
+            <h2 class="text-center">Universidad Nacional Santiago Antunes de Mayolo</h2>
+            <img src="{% static 'MyApp/images/logo.png' %}" alt="Logo de la Universidad" class="img-fluid mb-3" style="max-width: 200px;">
+        </section>
+
+        <section class="team-section">
+            <div class="image-container image-left">
+                <img src="{% static 'MyApp/images/azusa_render.png' %}" alt="Integrante Izquierda" class="img-fluid">
+            </div>
+            <div class="image-container image-right">
+                <img src="{% static 'MyApp/images/flashy_gil.png' %}" alt="Integrante Derecha" class="img-fluid">
+            </div>
+            <h2>Integrantes del Proyecto</h2>
+            <ul class="team-list">
+                <li>Urbano Flores Ruber</li>
+                <li>Gonzales Coral Alexander</li>
+                <li>Salazar Garay Rivaldo</li>
+                <li>Garay Espinoza Jhonny</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://wa.me/+51930686399" target="_blank" title="WhatsApp">
+                <i class="fab fa-whatsapp fa-2x"></i>
+            </a>
+            <a href="https://github.com/RuberUF" target="_blank" title="GitHub">
+                <i class="fab fa-github fa-2x"></i>
+            </a>
+            <a href="https://t.me/+51930686388" target="_blank" title="Telegram">
+                <i class="fab fa-telegram fa-2x"></i>
+            </a>
+        </div>
+        <p>&copy; 2024 Algoritmos de Ordenamiento. Todos los derechos reservados.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
