@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body {
+    background-image: url('/static/MyApp/images/imagen2.png');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.fade-in {
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+header ul li a {
+    transition: all 0.3s ease-in-out;
+}
+
+header ul li a:hover {
+    text-decoration: underline;
+    transform: scale(1.1);
+}
+
+button {
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* Estilo general */
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+a {
+    color: #bb86fc;
+}
+
+a:hover {
+    color: #3700b3;
+}
+
+.navbar {
+    background-color: #1f1f1f;
+}
+
+.hero {
+    background-color: #1f1f1f;
+    position: relative;
+}
+
+.card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+footer {
+    background-color: #212529;
+    padding: 30px 20px;
+    color: white;
+    text-align: center;
+    position: relative;
+    margin-top: 30px;
+}
+
+footer .social-icons a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+footer .social-icons a:hover {
+    color: #ffc107;
+}
+
+footer p {
+    margin-top: 15px;
+    font-size: 1rem;
+}
+
+.img-fixed-right {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 200px;
+    height: auto;
+    z-index: 1;
+}

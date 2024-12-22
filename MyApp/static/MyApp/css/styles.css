@@ -1,0 +1,121 @@
+
+.N {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+a {
+    color: #bb86fc;
+}
+
+a:hover {
+    color: #3700b3;
+}
+
+.navbar {
+    background-color: #1f1f1f;
+}
+
+.hero {
+    background-color: #1f1f1f;
+    position: relative;
+}
+
+.card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+footer {
+    background-color: #212529;
+    padding: 30px 20px;
+    color: white;
+    text-align: center;
+    position: relative;
+    margin-top: 30px;
+}
+
+footer .social-icons a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+footer .social-icons a:hover {
+    color: #ffc107;
+}
+
+footer p {
+    margin-top: 15px;
+    font-size: 1rem;
+}
+
+.search-bar img {
+    position: absolute;
+    right: 20px;
+    width: 300px;
+    height: auto;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.img-fixed-left {
+    position: fixed;
+    top: 70px;
+    left: 20px;
+    width: 200px;
+    height: auto;
+    z-index: 1;
+}
+
+.img-right-fixed {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 200px;
+    height: auto;
+    z-index: 1;
+}
+
+.card {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card .table {
+    margin-top: 1rem;
+}
+
+.card .form-label {
+    font-weight: bold;
+}
+.img-right-fixed {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 200px;
+    height: auto;
+    z-index: 2;
+}
+.checkbox-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-item input {
+    margin-right: 10px;
+}
+
+
+@media (max-width: 767px) {
+    .checkbox-container {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

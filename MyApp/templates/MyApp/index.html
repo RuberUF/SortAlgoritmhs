@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmos de Ordenamiento y Búsqueda</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'MyApp/css/styles.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <style>
+        .accordion-button {
+            background-color: #343a40 !important;
+            color: #e0e0e0;
+            border: none;
+        }
+        
+        .accordion-button:not(.collapsed) {
+            background-color: #495057 !important;
+        }
+        
+        .accordion-button::after {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23e0e0e0' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 011.414 0L8 9.586l4.94-4.94a.5.5 0 11.707.707l-5.647 5.646a.5.5 0 01-.707 0L1.646 5.353a.5.5 0 010-.707z'/%3E%3C/svg%3E") !important;
+        }
+        
+        .accordion-body {
+            background-color: #2d2d2d;
+        }
+        .highlight {
+            background-color: yellow;
+        }
+        .text-white {
+            color: white;
+        }
+        /* Estilo para el modal */
+        .modal-content {
+            background: rgba(0, 0, 0, 0.8); /* Fondo oscuro y transparente */
+            border-radius: 15px; /* Bordes redondeados para el modal */
+            border: none; /* Eliminar bordes por defecto */
+        }
+        
+        /* Estilo para la barra de progreso */
+        .progress {
+            height: 20px; /* Altura de la barra de progreso */
+            background: rgba(255, 255, 255, 0.2); /* Fondo de la barra de progreso */
+            border-radius: 10px; /* Bordes redondeados */
+            margin-bottom: 15px; /* Separación entre la barra y el texto */
+        }
+        
+        /* Estilo para la barra de progreso interna */
+        .progress-bar {
+            background-color: #28a745; /* Color de la barra de progreso */
+            border-radius: 10px; /* Bordes redondeados */
+            transition: width 0.5s ease-in-out; /* Animación suave para la barra de progreso */
+        }
+        
+        /* Estilo para el texto dentro del modal */
+        .modal-body p {
+            color: #ffffff; /* Color del texto */
+            font-size: 16px; /* Tamaño de fuente */
+            font-weight: bold; /* Hacer el texto más destacable */
+        }
+        
+        /* Estilo para el modal en general */
+        .modal-body {
+            color: #ffffff;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        /* Efectos adicionales para la animación */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.7) !important; /* Fondo oscuro y semi-transparente */
+        }
+        
+        /* Agregar transición para el fondo */
+        .modal.fade .modal-dialog {
+            transition: transform 0.3s ease-out;
+        }
+        
+        
+    </style>
+</head>
+
+<body class="N">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="{% url 'home' %}"><i class="fas fa-cogs"></i> Algoritmos</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'intereses' %}">Compresión</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">Acerca</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="container my-5">
+        <br>
+        <section class="mb-5">
+            <img src="{% static 'MyApp/images/hunter_x_hunter.png' %}" alt="Preview del Proyecto" class="img-fluid img-fixed-left">
+            <div class="card p-4 shadow-lg">
+                <h2 class="text-center mb-4">Algoritmos de Ordenamiento</h2>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <label for="dataInputFile" class="form-label fw-bold">Cargar desde archivo</label>
+                        <input type="file" id="dataInputFile" class="form-control" accept=".csv">
+                    </div>                    
+                    <div class="col-md-4">
+                        <label for="dataInputText" class="form-label fw-bold">Ingresar datos manualmente</label>
+                        <textarea id="dataInputText" class="form-control mb-2" rows="10" placeholder="Ingrese los datos separados por comas..."></textarea>
+                        <button id="clearButton" class="btn btn-secondary w-100">Limpiar</button>
+                    </div>
+                    
+                    
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Generar datos</label>
+                        <input type="number" id="startRange" class="form-control mb-2" placeholder="Rango inicial">
+                        <input type="number" id="endRange" class="form-control mb-2" placeholder="Rango final">
+                    
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="randomData">
+                            <label class="form-check-label" for="randomData">Aleatorios</label>
+                        </div>
+                    
+                        <input type="number" id="dataCount" class="form-control mb-3" placeholder="Cantidad de datos" disabled>
+                        <button id="generateRandomData" class="btn btn-primary w-100">Generar Datos</button>
+                    </div>
+                    
+                    
+                </div>
+                <div class="mt-4">
+                    <h5 class="fw-bold mb-3">Opciones de Ordenamiento</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="orderType" class="form-label">Orden</label>
+                            <select id="orderType" class="form-select">
+                                <option value="asc">Ascendente</option>
+                                <option value="desc">Descendente</option>
+                            </select>
+                            <button type="button" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#filtersModal">Filtros</button>
+                        </div>
+                        
+                        <div class="modal fade" id="filtersModal" tabindex="-1" aria-labelledby="filtersModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content bg-dark text-white">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="filtersModalLabel">Filtros</h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h3>Ordenar Solo</h3>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="sortFilter" id="prime" value="prime">
+                                                    <label class="form-check-label" for="prime">Primos</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="sortFilter" id="fibonacci" value="fibonacci">
+                                                    <label class="form-check-label" for="fibonacci">Fibonacci</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="sortFilter" id="factorial" value="factorial">
+                                                    <label class="form-check-label" for="factorial">Factorial</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="sortFilter" id="amigos" value="amigos">
+                                                    <label class="form-check-label" for="amigos">Amigos</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="sortFilter" id="narcisistas" value="narcisistas">
+                                                    <label class="form-check-label" for="narcisistas">Narcisistas</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="sortFilter" id="perfectos" value="perfectos">
+                                                    <label class="form-check-label" for="perfectos">Perfectos</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="sortFilter" id="deficientes" value="deficientes">
+                                                    <label class="form-check-label" for="deficientes">Deficientes</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="sortFilter" id="abundantes" value="abundantes">
+                                                    <label class="form-check-label" for="abundantes">Abundantes</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="sortFilter" id="pronic" value="pronic">
+                                                    <label class="form-check-label" for="pronic">Prónicos</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-primary" id="saveChangesBtn">Guardar Cambios</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label">Algoritmos</label>
+                            <div class="checkbox-container">
+                                <div class="checkbox-item">
+                                    <input class="form-check-input" type="checkbox" id="selectAll" value="selectAll">
+                                    <label class="form-check-label" for="selectAll">Seleccionar Todos</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input class="form-check-input" type="checkbox" id="bubbleSort" value="Bubble Sort">
+                                    <label class="form-check-label" for="bubbleSort">Bubble Sort</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input class="form-check-input" type="checkbox" id="quickSort" value="Quick Sort">
+                                    <label class="form-check-label" for="quickSort">Quick Sort</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input class="form-check-input" type="checkbox" id="cocktailSort" value="Cocktail Sort">
+                                    <label class="form-check-label" for="cocktailSort">Cocktail Sort</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input class="form-check-input" type="checkbox" id="insertionSort" value="Insertion Sort">
+                                    <label class="form-check-label" for="insertionSort">Insertion Sort</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input class="form-check-input" type="checkbox" id="bucketSort" value="Bucket Sort">
+                                    <label class="form-check-label" for="bucketSort">Bucket Sort</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input class="form-check-input" type="checkbox" id="countingSort" value="Counting Sort">
+                                    <label class="form-check-label" for="countingSort">Counting Sort</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input class="form-check-input" type="checkbox" id="mergeSort" value="Merge Sort">
+                                    <label class="form-check-label" for="mergeSort">Merge Sort</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input class="form-check-input" type="checkbox" id="binaryTreeSort" value="Binary Tree Sort">
+                                    <label class="form-check-label" for="binaryTreeSort">Binary Tree Sort</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input class="form-check-input" type="checkbox" id="radixSort" value="Radix Sort">
+                                    <label class="form-check-label" for="radixSort">Radix Sort</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input class="form-check-input" type="checkbox" id="shellSort" value="Shell Sort">
+                                    <label class="form-check-label" for="shellSort">Shell Sort</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input class="form-check-input" type="checkbox" id="combSort" value="Comb Sort">
+                                    <label class="form-check-label" for="combSort">Comb Sort</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input class="form-check-input" type="checkbox" id="heapSort" value="Heap Sort">
+                                    <label class="form-check-label" for="heapSort">Heap Sort</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="sortButton" class="btn btn-success w-100 mt-4" name="btn1">Ordenar Datos</button>
+                </div>
+            </div>
+        </section>
+        <section class="mb-5">
+            <div class="card p-4 shadow-lg">
+                <h2 class="text-center mb-4">Resultados</h2>
+
+                <div class="table-responsive">
+                    <div id="resultsContainer" class="row"></div>
+                </div>
+                <img src="{% static 'MyApp/images/anime_girl_render_14_by_nunnallyrey.png' %}" alt="Preview del Proyecto" class="img-fluid mt-4 d-block mx-auto">
+                <div class="d-flex justify-content-between">
+                    <button id="descargarBtn" class="btn btn-descargar" type="button" name="descargarBtn">Descargar</button>
+                    <button id="verGraficaBtn" class="btn btn-grafica" data-bs-toggle="modal" data-bs-target="#graficaModal">Ver Gráfica</button>
+                    <button class="btn btn-historial" data-bs-toggle="modal" data-bs-target="#historialModal">Ver Historial</button>
+                </div>
+                
+
+                <div class="modal fade" id="graficaModal" tabindex="-1" aria-labelledby="graficaModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="graficaModalLabel">Gráfica de Resultados</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <canvas id="graficaResultados" width="400" height="400"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+<div class="modal fade" id="historialModal" tabindex="-1" aria-labelledby="historialModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header">
+                <h5 class="modal-title" id="historialModalLabel">
+                    <img src="{% static 'MyApp/images/yuta_okkotsu.png' %}"  alt="Ícono de Historial" style="width: 24px; margin-right: 10px;">
+                    Historial de Algoritmos
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h3>Resumen de Uso</h3>
+                <table class="table table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th>Algoritmo</th>
+                            <th>Veces Usado</th>
+                            <th>Datos Ordenados</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historialResumen">
+                    </tbody>
+                </table>
+                <button class="btn btn-primary w-100 mt-3" id="verDetallesBtn" data-bs-toggle="modal" data-bs-target="#detallesModal">
+                    Ver Más Detalles
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="detallesModal" tabindex="-1" aria-labelledby="detallesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detallesModalLabel">
+                    <img src="{% static 'MyApp/images/yuta_okkotsu.png' %}" alt="Ícono de Detalles" style="width: 24px; margin-right: 10px;">
+                    Detalles del Historial
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h3>Detalles del Uso</h3>
+                <table class="table table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th>Índice</th>
+                            <th>Algoritmo</th>
+                            <th>Datos Ordenados</th>
+                            <th>Tiempo (ms)</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historialDetalles">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+                <h5 class="modal-title" id="alertModalLabel">
+                    <img src="{% static 'MyApp/images/anime_render.png' %}" alt="Ícono de Advertencia" style="width: 24px; margin-right: 10px;">
+                    Alerta
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center" id="alertModalBody">
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+<section class="mb-5">
+    <div class="card p-4 shadow-lg">
+        <h2 class="text-center mb-4">Búsqueda</h2>
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <input type="text" id="searchInput" class="form-control" placeholder="Buscar Dato">
+            </div>
+            <div class="col-md-4">
+                <select id="searchType" class="form-select">
+                    <option>Tipo de Busqueda</option>
+                    <option>Lineal</option>
+                    <option>Binaria</option>
+                    <option>Exponencial</option>
+                    <option>Fibonacci</option>
+                    <option>Interpolación</option>
+                </select>
+            </div>
+        </div>
+        <button id="searchButton" type="submit" class="btn btn-primary mb-4">Buscar</button>
+        
+        <div class="table-responsive">
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Índice</th>
+                        <th>Dato</th>
+                        <th>Algoritmo</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody id="searchResults">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<div id="resultsContainer" class="mt-5">
+</div>
+
+<div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-light" style="background: rgba(0, 0, 0, 0.8);">
+            <div class="modal-body text-center">
+                <img src="{% static 'MyApp/images/yuta_okkotsu.png' %}" alt="Cargando" class="mb-3" style="width: 50px; height: 50px;">
+                <div class="progress mb-3" style="height: 20px; background: rgba(255, 255, 255, 0.2);">
+                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%"></div>
+                </div>
+                <p id="loadingPercentage" class="mt-3">0% completado</p>
+                <p id="loadingMessage" class="mt-3"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    </main>
+
+    <footer>
+        <div class="social-icons text-center">
+            <a href="https://wa.me/+51930686399" target="_blank" title="WhatsApp">
+                <i class="fab fa-whatsapp fa-2x"></i>
+            </a>
+            <a href="https://github.com/RuberUF" target="_blank" title="GitHub">
+                <i class="fab fa-github fa-2x"></i>
+            </a>
+            <a href="https://t.me/+51930686388" target="_blank" title="Telegram">
+                <i class="fab fa-telegram fa-2x"></i>
+            </a>
+        </div>
+        <p>&copy; 2024 Algoritmos de Ordenamiento. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        const csrftoken = getCookie('csrftoken');
+        const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+        if (csrfTokenMeta) {
+            const csrftoken = csrfTokenMeta.getAttribute('content');
+        }
+        
+    </script>
+    <script></script>   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

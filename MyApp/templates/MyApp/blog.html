@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog de Programación</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'MyApp/css/blog.css' %}">
+    <link rel="icon" href="{% static 'assets/img/imagen4.png' %}" type="image/png">
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        a {
+            color: #bb86fc;
+        }
+        
+        a:hover {
+            color: #3700b3;
+        }
+        
+        .navbar {
+            background-color: #1f1f1f;
+        }
+        
+        .hero {
+            background-color: #1f1f1f;
+            position: relative;
+        }
+        
+        .search-bar input {
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+            border: 1px solid #444;
+        }
+        
+        .search-bar button {
+            background-color: #bb86fc;
+            border: none;
+        }
+        
+        .search-bar button:hover {
+            background-color: #3700b3;
+        }
+        
+        .search-bar img {
+            position: absolute;
+            bottom: -150px;
+            right: -200px; 
+            width: 300px; 
+            height: auto; 
+            pointer-events: none; 
+            z-index: 2; 
+        }
+        
+        @media (max-width: 1398px) {
+            .search-bar img {
+                right: auto;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: -150px;
+            }
+        }
+        
+        .card img {
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .accordion-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            max-height: 100%;
+        }
+        
+        .blog-section {
+            margin-bottom: 20px;
+        }
+        
+        .blog-section h2 {
+            border-bottom: 2px solid #bb86fc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .accordion-header button {
+            font-weight: bold;
+            background-color: #343a40;
+        }
+        
+        .accordion-header button:hover {
+            background-color: #495057;
+        }
+        
+        .accordion-body a {
+            display: block;
+            margin-top: 10px;
+            color: #bb86fc;
+            text-decoration: none;
+        }
+        
+        .accordion-body a:hover {
+            color: #3700b3;
+        }
+        
+        footer {
+            background-color: #212529;
+            padding: 30px 20px;
+            color: white;
+            text-align: center;
+            position: relative;
+            margin-top: 30px;
+        }
+        
+        footer .social-icons a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        footer .social-icons a:hover {
+            color: #ffc107;
+        }
+        
+        footer p {
+            margin-top: 15px;
+            font-size: 1rem;
+        }
+        
+        footer .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        /* Mejoras en el diseño de la tarjeta */
+        .card.custom-card {
+            border: 1px solid #343a40;
+            border-radius: 10px;
+            background-color: #2a2a2a;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            margin: 0;
+        }
+        
+        .custom-card .accordion-button {
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .custom-card .accordion-button:hover {
+            background-color: #495057;
+            transform: scale(1.02);
+        }
+        
+        .custom-card .accordion-collapse {
+            border-top: 1px solid #444;
+        }
+        
+        .custom-card .accordion-body {
+            background-color: #1e1e1e;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 10px;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .custom-card .accordion-item {
+            margin-bottom: 10px;
+        }
+        /* Para la tarjeta del acordeón pegada a la derecha */
+.accordion-container {
+    margin-right: 0;
+}
+
+/* Para la cuadrícula de noticias */
+.news-grid .col-md-4 {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ajustes opcionales para las tarjetas */
+.news-grid .card {
+    height: 100%;
+}
+/* Elimina el margen derecho del contenedor del acordeón */
+.accordion-container {
+    margin-right: 0;
+    padding-right: 1;
+}
+
+/* Asegúrate de que el contenedor principal no tenga padding derecho */
+.container {
+    padding-right: 1;
+}
+
+        
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm">
+            <div class="container">
+                <a class="navbar-brand" href="#"><i class="fas fa-coffee"></i> Blog Coffee</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'intereses'%}">Compresión</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'blog' %}">Blog</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">Acerca</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero text-center d-flex align-items-center justify-content-center" style="height: 60vh;">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Bienvenido</h1>
+            <p class="lead">Explora noticias de tecnología, programación, IA</p>
+            <div class="search-bar mt-4 position-relative">
+                <form class="d-flex justify-content-center">
+                    <input class="form-control w-50 me-2" type="search" placeholder="Buscar tema específico" aria-label="Buscar">
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                </form>
+                <img src="{% static 'MyApp/images/hirasawa_yui.png' %}">
+            </div>
+        </div>
+    </section>
+    
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mb-4 blog-section">
+                <h2>Noticias Recientes</h2>
+                <div class="row news-grid">
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-dark text-white">
+                            <img src="{% static 'MyApp/images/imagen1.png' %}" class="card-img-top" alt="Python 3.12">
+                            <div class="card-body">
+                                <h5 class="card-title">Nueva Actualización de Python 3.12</h5>
+                                <p class="card-text">Descubre las nuevas funcionalidades que trae la versión 3.12 del popular lenguaje de programación.</p>
+                                <a href="https://www.python.org/downloads/"><p>Leer Más</p></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-dark text-white">
+                            <img src="{% static 'MyApp/images/imagen2.png' %}" class="card-img-top" alt="Avances en IA">
+                            <div class="card-body">
+                                <h5 class="card-title">Avances en Inteligencia Artificial</h5>
+                                <p class="card-text">La IA está revolucionando la industria con nuevos modelos de lenguaje y aprendizaje automático.</p>
+                                <a href="https://omniasolution.com/2024/04/16/machine-learning-la-revolucion-en-la-inteligencia-artificial/"><p>Leer Más</p></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-dark text-white">
+                            <img src="{% static 'MyApp/images/imagen1.png' %}" class="card-img-top" alt="Python 3.12">
+                            <div class="card-body">
+                                <h5 class="card-title">Nueva Actualización de Python 3.12</h5>
+                                <p class="card-text">Descubre las nuevas funcionalidades que trae la versión 3.12 del popular lenguaje de programación.</p>
+                                <a href="https://www.python.org/downloads/"><p>Leer Más</p></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-dark text-white">
+                            <img src="{% static 'MyApp/images/imagen1.png' %}" class="card-img-top" alt="Python 3.12">
+                            <div class="card-body">
+                                <h5 class="card-title">Nueva Actualización de Python 3.12</h5>
+                                <p class="card-text">Descubre las nuevas funcionalidades que trae la versión 3.12 del popular lenguaje de programación.</p>
+                                <a href="https://www.python.org/downloads/"><p>Leer Más</p></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-dark text-white">
+                            <img src="{% static 'MyApp/images/imagen1.png' %}" class="card-img-top" alt="Python 3.12">
+                            <div class="card-body">
+                                <h5 class="card-title">Nueva Actualización de Python 3.12</h5>
+                                <p class="card-text">Descubre las nuevas funcionalidades que trae la versión 3.12 del popular lenguaje de programación.</p>
+                                <a href="https://www.python.org/downloads/"><p>Leer Más</p></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-dark text-white">
+                            <img src="{% static 'MyApp/images/imagen1.png' %}" class="card-img-top" alt="Python 3.12">
+                            <div class="card-body">
+                                <h5 class="card-title">Nueva Actualización de Python 3.12</h5>
+                                <p class="card-text">Descubre las nuevas funcionalidades que trae la versión 3.12 del popular lenguaje de programación.</p>
+                                <a href="https://www.python.org/downloads/"><p>Leer Más</p></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card bg-dark text-white">
+                            <img src="{% static 'MyApp/images/imagen1.png' %}" class="card-img-top" alt="Python 3.12">
+                            <div class="card-body">
+                                <h5 class="card-title">Nueva Actualización de Python 3.12</h5>
+                                <p class="card-text">Descubre las nuevas funcionalidades que trae la versión 3.12 del popular lenguaje de programación.</p>
+                                <a href="https://www.python.org/downloads/"><p>Leer Más</p></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-lg-4 mb-4 accordion-container">
+                <div class="card custom-card text-white p-3">
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item bg-dark">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Aprende Python
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <ul class="list-group bg-dark">
+                                        <li class="list-group-item bg-dark text-white">
+                                            <a href="https://learn.microsoft.com/es-es/training/modules/intro-to-python/">Introducción a Python</a>
+                                        </li>
+                                        <li class="list-group-item bg-dark text-white">
+                                            <a href="https://learn.microsoft.com/es-es/training/modules/python-create-run-program/">Creación de sus primeros programas en Python</a>
+                                        </li>
+                                        <li class="list-group-item bg-dark text-white">
+                                            <a href="https://learn.microsoft.com/es-es/training/modules/python-boolean-types/">Uso de lógica booleana en Python</a>
+                                        </li>
+                                        <li class="list-group-item bg-dark text-white">
+                                            <a href="https://learn.microsoft.com/es-es/training/modules/python-strings/">Uso de cadenas en Python</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item bg-dark">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    Ejercicios de Programación
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p>Practica tus habilidades de programación con ejercicios en diversos lenguajes.</p>
+                                    <a href="{%url 'ejercicios'%}" class="btn btn-danger">Ver Ejercicios</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item bg-dark">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    Ejercicios de Programación
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p>Practica tus habilidades de programación con ejercicios en diversos lenguajes.</p>
+                                    <a href="{%url 'ejercicios'%}" class="btn btn-danger">Ver Ejercicios</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item bg-dark">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    Ejercicios de Programación
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p>Practica tus habilidades de programación con ejercicios en diversos lenguajes.</p>
+                                    <a href="{%url 'ejercicios'%}" class="btn btn-danger">Ver Ejercicios</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item bg-dark">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    Ejercicios de Programación
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p>Practica tus habilidades de programación con ejercicios en diversos lenguajes.</p>
+                                    <a href="{%url 'ejercicios'%}" class="btn btn-danger">Ver Ejercicios</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item bg-dark">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    Ejercicios de Programación
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p>Practica tus habilidades de programación con ejercicios en diversos lenguajes.</p>
+                                    <a href="{%url 'ejercicios'%}" class="btn btn-danger">Ver Ejercicios</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+<footer>
+    <div class="footer-logo">
+        Blog Coffee
+    </div>
+    <div class="social-icons">
+        <a href="https://wa.me/1234567890" target="_blank" title="WhatsApp">
+            <i class="fab fa-whatsapp fa-2x"></i>
+        </a>
+        <a href="https://github.com/tu-usuario" target="_blank" title="GitHub">
+            <i class="fab fa-github fa-2x"></i>
+        </a>
+        <a href="https://t.me/tu-usuario" target="_blank" title="Telegram">
+            <i class="fab fa-telegram fa-2x"></i>
+        </a>
+    </div>
+    <p>&copy; 2024 Blog Coffee. Todos los derechos reservados.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
